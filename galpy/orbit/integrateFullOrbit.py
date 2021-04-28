@@ -211,12 +211,18 @@ def _parse_pot(pot,potforactions=False,potfortorus=False):
             pot_args.extend(p._rforce_grid)
             pot_args.extend([p._amp,p._rmin,p._rmax,p._total_mass,
                              p._Phi0,p._Phimax])
+        # 37: TriaxialGaussianPotential, done with others above
+        ######################################################################
         # 38: ConstantVerticalForce
+        # 39: ConstantWind
         elif isinstance(p,potential.ConstantVerticalForce):
             pot_type.append(38)
             pot_args.extend([-1.,0.,0.,0.,0.,0.,0.,0.]) # for caching
             pot_args.extend([p.acc])
-        # 37: TriaxialGaussianPotential, done with others above
+        #elif isinstance(p,potential.ConstantWind):
+        #    pot_type.append(39)
+        #    pot_args.extend([-1.,0.,0.,0.,0.,0.,0.,0.]) # for caching
+        #    pot_args.extend([p.Mcl,p.Rcl,p.rho,p.vwind])
         ############################## WRAPPERS ###############################
         elif isinstance(p,potential.DehnenSmoothWrapperPotential):
             pot_type.append(-1)

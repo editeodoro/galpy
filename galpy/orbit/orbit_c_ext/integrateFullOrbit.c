@@ -465,6 +465,13 @@ void parse_leapFuncArgs_Full(int npot,
       potentialArgs->nargs= (int) 9;
       potentialArgs->requiresVelocity= true;
       break;
+    //case 39: //ConstantWind
+    //  potentialArgs->RforceVelocity= &ConstantWindRforce;
+    //  potentialArgs->zforceVelocity= &ConstantWindzforce;
+    //  potentialArgs->phiforceVelocity= &ConstantWindphiforce;
+    //  potentialArgs->nargs= (int) 12;
+    //  potentialArgs->requiresVelocity= true;
+    //  break;
 //////////////////////////////// WRAPPERS /////////////////////////////////////
     case -1: //DehnenSmoothWrapperPotential
       potentialArgs->potentialEval= &DehnenSmoothWrapperPotentialEval;

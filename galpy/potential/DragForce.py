@@ -292,7 +292,7 @@ class ConstantRadialForce(DissipativeForce):
 
 
 class ConstantWind(DissipativeForce):
-    """Class that implements a constant wind """
+    """Class that implements a constant vertical wind driven by drag"""
     def __init__(self,Rcl,Mcl,rhoh,vwind,ro=None,vo=None):
         
         DissipativeForce.__init__(self,amp=1,ro=ro,vo=vo,amp_units=None)
@@ -311,10 +311,12 @@ class ConstantWind(DissipativeForce):
         self.rhoh = rhoh
         self.vwind = vwind
         self._cached_force = None
-        self._force_hash= None
+        self._force_hash = None
+        #self.hasC = True
         
         
     def _calc_force(self,R,phi,z,v,t):
+        print ("this is python!")
         vs = np.sqrt(v[0]**2.+v[1]**2.+(self.vwind-v[2])**2.)
         c = np.pi*self.Rcl**2*self.rhoh/self.Mcl
         self._cached_force = c*vs
