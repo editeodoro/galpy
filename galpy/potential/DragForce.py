@@ -226,7 +226,6 @@ class ConstantVerticalForce(DissipativeForce):
         self.acc = acc
         self._cached_force = None
         self.hasC = True
-        self._dens_pot = 0 
         
     def _calc_force(self,R,phi,z,v,t): 
         print ("this is python")

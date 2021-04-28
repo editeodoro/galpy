@@ -211,6 +211,11 @@ def _parse_pot(pot,potforactions=False,potfortorus=False):
             pot_args.extend(p._rforce_grid)
             pot_args.extend([p._amp,p._rmin,p._rmax,p._total_mass,
                              p._Phi0,p._Phimax])
+        # 38: ConstantVerticalForce
+        elif isinstance(p,potential.ConstantVerticalForce):
+            pot_type.append(38)
+            pot_args.extend([-1.,0.,0.,0.,0.,0.,0.,0.]) # for caching
+            pot_args.extend([p.acc])
         # 37: TriaxialGaussianPotential, done with others above
         ############################## WRAPPERS ###############################
         elif isinstance(p,potential.DehnenSmoothWrapperPotential):
@@ -283,7 +288,7 @@ def _parse_pot(pot,potforactions=False,potfortorus=False):
                              -1 if not p._lnLambda else p._lnLambda,
                              p._minr**2.])
             pot_args.extend([p._sigmar_rs_4interp[0],
-                             p._sigmar_rs_4interp[-1]]) #r_0, r_f
+                             p._sigmar_rs_4interp[-1]]) #r_0, r_f            
     pot_type= numpy.array(pot_type,dtype=numpy.int32,order='C')
     pot_args= numpy.array(pot_args,dtype=numpy.float64,order='C')
     return (npot,pot_type,pot_args)
@@ -328,6 +333,7 @@ def integrateFullOrbit_c(pot,yo,t,int_method,rtol=None,atol=None,dt=None):
     nobj= len(yo)
     rtol, atol= _parse_tol(rtol,atol)
     npot, pot_type, pot_args= _parse_pot(pot)
+    
     int_method_c= _parse_integrator(int_method)
     if dt is None: 
         dt= -9999.99

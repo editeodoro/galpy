@@ -458,6 +458,13 @@ void parse_leapFuncArgs_Full(int npot,
 					    + (int) (*(*pot_args+7) + 20)));
       potentialArgs->requiresVelocity= false;
       break;
+    case 38: //ConstantVerticalForce
+      potentialArgs->RforceVelocity= &ConstantVerticalForceRforce;
+      potentialArgs->zforceVelocity= &ConstantVerticalForcezforce;
+      potentialArgs->phiforceVelocity= &ConstantVerticalForcephiforce;
+      potentialArgs->nargs= (int) 9;
+      potentialArgs->requiresVelocity= true;
+      break;
 //////////////////////////////// WRAPPERS /////////////////////////////////////
     case -1: //DehnenSmoothWrapperPotential
       potentialArgs->potentialEval= &DehnenSmoothWrapperPotentialEval;
@@ -504,6 +511,7 @@ void parse_leapFuncArgs_Full(int npot,
       potentialArgs->requiresVelocity= true;
       break;
     }
+    
     int setupMovingObjectSplines = *(*pot_type-1) == -6 ? 1 : 0;
     int setupChandrasekharDynamicalFrictionSplines = *(*pot_type-1) == -7 ? 1 : 0;
     if ( *(*pot_type-1) < 0 ) { // Parse wrapped potential for wrappers
@@ -529,6 +537,7 @@ void parse_leapFuncArgs_Full(int npot,
   }
   potentialArgs-= npot;
 }
+
 EXPORT void integrateFullOrbit(int nobj,
 			       double *yo,
 			       int nt, 
@@ -549,6 +558,7 @@ EXPORT void integrateFullOrbit(int nobj,
   int * thread_pot_type;
   double * thread_pot_args;
   max_threads= ( nobj < omp_get_max_threads() ) ? nobj : omp_get_max_threads();
+  
   // Because potentialArgs may cache, safest to have one / thread
   struct potentialArg * potentialArgs= (struct potentialArg *) malloc ( max_threads * npot * sizeof (struct potentialArg) );
 #pragma omp parallel for schedule(static,1) private(ii,thread_pot_type,thread_pot_args) num_threads(max_threads) 
@@ -558,6 +568,7 @@ EXPORT void integrateFullOrbit(int nobj,
     parse_leapFuncArgs_Full(npot,potentialArgs+ii*npot,
 			    &thread_pot_type,&thread_pot_args);
   }
+
   //Integrate
   void (*odeint_func)(void (*func)(double, double *, double *,
 			   int, struct potentialArg *),

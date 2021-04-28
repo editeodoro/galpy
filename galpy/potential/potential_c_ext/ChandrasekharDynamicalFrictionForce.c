@@ -18,6 +18,7 @@ double ChandrasekharDynamicalFrictionForceAmplitude(double R,double z,
 						    double vz){
   double sr,X,Xfactor,d_ind,forceAmplitude;
   double * args= potentialArgs->args;
+
   //Get args
   double amp= *args;
   double ms= *(args+9);

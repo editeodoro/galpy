@@ -692,6 +692,12 @@ double ChandrasekharDynamicalFrictionForcephiforce(double,double,double,double,
 double ChandrasekharDynamicalFrictionForcezforce(double,double,double,double,
 						 struct potentialArg *,
 						 double,double,double);
+double ConstantVerticalForceRforce(double,double,double,double,
+                                   struct potentialArg *,double,double,double);
+double ConstantVerticalForcezforce(double,double,double,double,
+                                   struct potentialArg *,double,double,double);
+double ConstantVerticalForcephiforce(double,double,double,double,
+                                   struct potentialArg *,double,double,double);
 #ifdef __cplusplus
 }
 #endif
