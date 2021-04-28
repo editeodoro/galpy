@@ -700,12 +700,12 @@ double ConstantVerticalForcezforce(double,double,double,double,
 double ConstantVerticalForcephiforce(double,double,double,double,
                                    struct potentialArg *,double,double,double);
 //ConstantWind
-//double ConstantWindRforce(double,double,double,double,
-//                          struct potentialArg *,double,double,double);
-//double ConstantWindzforce(double,double,double,double,
-//                          struct potentialArg *,double,double,double);
-//double ConstantWindphiforce(double,double,double,double,
-//                            struct potentialArg *,double,double,double);
+double ConstantWindRforce(double,double,double,double,
+                          struct potentialArg *,double,double,double);
+double ConstantWindzforce(double,double,double,double,
+                          struct potentialArg *,double,double,double);
+double ConstantWindphiforce(double,double,double,double,
+                            struct potentialArg *,double,double,double);
 #ifdef __cplusplus
 }
 #endif

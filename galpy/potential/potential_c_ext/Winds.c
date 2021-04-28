@@ -14,10 +14,10 @@ double ConstantVerticalForceAmplitude(double R,double z,double phi,double t,
                                       struct potentialArg * potentialArgs,
                                       double vR,double vT, double vz){
                                           
-  double *args= potentialArgs->args;  
+  double *args= potentialArgs->args;
   //Get args
   double forceAmplitude = args[8];
-  
+    
   // Caching
   args[0] = R;
   args[1] = z;
@@ -28,7 +28,6 @@ double ConstantVerticalForceAmplitude(double R,double z,double phi,double t,
   args[6] = vz;
   args[7] = forceAmplitude;
   return forceAmplitude;
-
 }
 
 double ConstantVerticalForceRforce(double R,double z,double phi,double t,
@@ -67,7 +66,7 @@ double ConstantVerticalForcephiforce(double R,double z,double phi,double t,
 }
 
 
-/*
+
 //////////////////////////////////////////////////////////////////////////////
 //  CONSTANT WIND
 //////////////////////////////////////////////////////////////////////////////
@@ -82,7 +81,7 @@ double ConstantWindAmplitude(double R,double z,double phi,double t,
   double rhoh  = args[10];
   double vwind = args[11];
   
-  double vs = sqrt(vR**2.+vT**2.+(vwind-vz)*(vwind-vz));
+  double vs = sqrt(vR*vR+vT*vT+(vwind-vz)*(vwind-vz));
   double C = M_PI*Rcl*Rcl*rhoh/Mcl;
   double forceAmplitude = C*vs;
   
@@ -103,9 +102,9 @@ double ConstantWindRforce(double R,double z,double phi,double t,
                           struct potentialArg * potentialArgs,
                           double vR,double vT,double vz){
                                        
-  double forceAmplitude = potentialArgs->args[7];
-  if (!isCached(potentialArgs->args,R,z,phi,t,vR,vT,vz))
-      forceAmplitude = ConstantVerticalForceAmplitude(R,z,phi,t,potentialArgs,vR,vT,vz);
+  //double forceAmplitude = potentialArgs->args[7];
+  //if (!isCached(potentialArgs->args,R,z,phi,t,vR,vT,vz))
+  //    forceAmplitude = ConstantWindAmplitude(R,z,phi,t,potentialArgs,vR,vT,vz);
   
   return 0;//forceAmplitude * vR;
 }
@@ -118,7 +117,7 @@ double ConstantWindzforce(double R,double z,double phi,double t,
   double vwind = potentialArgs->args[11];
   
   if (!isCached(potentialArgs->args,R,z,phi,t,vR,vT,vz))
-    forceAmplitude = ConstantVerticalForceAmplitude(R,z,phi,t,potentialArgs,vR,vT,vz);
+    forceAmplitude = ConstantWindAmplitude(R,z,phi,t,potentialArgs,vR,vT,vz);
   
   return forceAmplitude*(vwind-vz);
 }
@@ -128,14 +127,14 @@ double ConstantWindphiforce(double R,double z,double phi,double t,
                             struct potentialArg * potentialArgs,
                             double vR,double vT,double vz){
                                        
-  double forceAmplitude = potentialArgs->args[7];
+  //double forceAmplitude = potentialArgs->args[7];
   
-  if (!isCached(potentialArgs->args,R,z,phi,t,vR,vT,vz))
-    forceAmplitude = ConstantVerticalForceAmplitude(R,z,phi,t,potentialArgs,vR,vT,vz);
+  //if (!isCached(potentialArgs->args,R,z,phi,t,vR,vT,vz))
+  //    forceAmplitude = ConstantWindAmplitude(R,z,phi,t,potentialArgs,vR,vT,vz);
   
   return 0;//forceAmplitude*vT*R;
 }
-*/
+
 
 
 

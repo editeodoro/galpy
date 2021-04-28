@@ -228,7 +228,6 @@ class ConstantVerticalForce(DissipativeForce):
         self.hasC = True
         
     def _calc_force(self,R,phi,z,v,t): 
-        print ("this is python")
         self._cached_force = self.acc
 
     def _Rforce(self,R,z,phi=0.,t=0.,v=None):
@@ -312,11 +311,10 @@ class ConstantWind(DissipativeForce):
         self.vwind = vwind
         self._cached_force = None
         self._force_hash = None
-        #self.hasC = True
+        self.hasC = True
         
         
     def _calc_force(self,R,phi,z,v,t):
-        print ("this is python!")
         vs = np.sqrt(v[0]**2.+v[1]**2.+(self.vwind-v[2])**2.)
         c = np.pi*self.Rcl**2*self.rhoh/self.Mcl
         self._cached_force = c*vs

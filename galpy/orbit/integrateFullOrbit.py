@@ -219,10 +219,10 @@ def _parse_pot(pot,potforactions=False,potfortorus=False):
             pot_type.append(38)
             pot_args.extend([-1.,0.,0.,0.,0.,0.,0.,0.]) # for caching
             pot_args.extend([p.acc])
-        #elif isinstance(p,potential.ConstantWind):
-        #    pot_type.append(39)
-        #    pot_args.extend([-1.,0.,0.,0.,0.,0.,0.,0.]) # for caching
-        #    pot_args.extend([p.Mcl,p.Rcl,p.rho,p.vwind])
+        elif isinstance(p,potential.ConstantWind):
+            pot_type.append(39)
+            pot_args.extend([-1.,0.,0.,0.,0.,0.,0.,0.]) # for caching
+            pot_args.extend([p.Mcl,p.Rcl,p.rhoh,p.vwind])
         ############################## WRAPPERS ###############################
         elif isinstance(p,potential.DehnenSmoothWrapperPotential):
             pot_type.append(-1)
