@@ -469,7 +469,7 @@ void parse_leapFuncArgs_Full(int npot,
       potentialArgs->RforceVelocity= &ConstantWindRforce;
       potentialArgs->zforceVelocity= &ConstantWindzforce;
       potentialArgs->phiforceVelocity= &ConstantWindphiforce;
-      potentialArgs->nargs= (int) 12;
+      potentialArgs->nargs= (int) 13;
       potentialArgs->requiresVelocity= true;
       break;
 //////////////////////////////// WRAPPERS /////////////////////////////////////

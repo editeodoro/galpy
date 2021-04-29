@@ -292,7 +292,7 @@ class ConstantRadialForce(DissipativeForce):
 
 class ConstantWind(DissipativeForce):
     """Class that implements a constant vertical wind driven by drag"""
-    def __init__(self,Rcl,Mcl,rhoh,vwind,ro=None,vo=None):
+    def __init__(self,Rcl,Mcl,rhoh,vwind,isRadial=True,ro=None,vo=None):
         
         DissipativeForce.__init__(self,amp=1,ro=ro,vo=vo,amp_units=None)
         
@@ -309,37 +309,61 @@ class ConstantWind(DissipativeForce):
         self.Rcl = Rcl
         self.rhoh = rhoh
         self.vwind = vwind
+        self.isRadial = isRadial
         self._cached_force = None
         self._force_hash = None
         self.hasC = True
+
+
+    def _calc_cylindrical(self,R,phi,z,Fr):
         
-        
+        if self.isRadial:
+            # Vwind is radial, e.g. V(r)
+            theta = np.arctan2(R,z)
+            Fz    = Fr*np.cos(theta)
+            FR    = Fr*np.sin(theta)
+        else:
+            # Vwind is vertical, e.g. V(z)
+            Fz    = Fr if z>0 else -Fr
+            FR    = 0
+        return (FR,0,Fz)
+
+
     def _calc_force(self,R,phi,z,v,t):
-        vs = np.sqrt(v[0]**2.+v[1]**2.+(self.vwind-v[2])**2.)
+        
+        vw_R, _, vw_z = self._calc_cylindrical(R,phi,z,self.vwind)
+        vs = np.sqrt((vw_R-v[0])**2.+v[1]**2.+(vw_z-v[2])**2.)
         c = np.pi*self.Rcl**2*self.rhoh/self.Mcl
         self._cached_force = c*vs
         self._force_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
         
 
     def _Rforce(self,R,z,phi=0.,t=0.,v=None):
-        new_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
-        if new_hash != self._force_hash:
-            self._calc_force(R,phi,z,v,t)
-        force_R = 0#self._cached_force*v[0]
+
+        force_R = 0
+        if self.isRadial: 
+            vw_R, _, vw_z = self._calc_cylindrical(R,phi,z,self.vwind)
+            new_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
+            if new_hash != self._force_hash:
+                self._calc_force(R,phi,z,v,t)
+            force_R = self._cached_force*(vw_R-v[0])
+
         return force_R
 
 
     def _phiforce(self,R,z,phi=0.,t=0.,v=None): 
-        new_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
-        if new_hash != self._force_hash:
-            self._calc_force(R,phi,z,v,t)
+        #new_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
+        #if new_hash != self._force_hash:
+        #    self._calc_force(R,phi,z,v,t)
         force_phi= 0#self._cached_force*(v[1]*R)
         return force_phi
         
         
     def _zforce(self,R,z,phi=0.,t=0.,v=None):
+        
+        vw_R, _, vw_z = self._calc_cylindrical(R,phi,z,self.vwind)
         new_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
         if new_hash != self._force_hash:
             self._calc_force(R,phi,z,v,t)
-        force_z = self._cached_force*(self.vwind-v[2])
+        force_z = self._cached_force*(vw_z-v[2])
         return force_z
