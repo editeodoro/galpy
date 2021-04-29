@@ -340,22 +340,20 @@ class ConstantWind(DissipativeForce):
 
     def _Rforce(self,R,z,phi=0.,t=0.,v=None):
 
-        force_R = 0
-        if self.isRadial: 
-            vw_R, _, vw_z = self._calc_cylindrical(R,phi,z,self.vwind)
-            new_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
-            if new_hash != self._force_hash:
-                self._calc_force(R,phi,z,v,t)
-            force_R = self._cached_force*(vw_R-v[0])
-
+        vw_R, _, vw_z = self._calc_cylindrical(R,phi,z,self.vwind)
+        new_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
+        if new_hash != self._force_hash:
+            self._calc_force(R,phi,z,v,t)
+        force_R = self._cached_force*(vw_R-v[0])
         return force_R
 
 
     def _phiforce(self,R,z,phi=0.,t=0.,v=None): 
-        #new_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
-        #if new_hash != self._force_hash:
-        #    self._calc_force(R,phi,z,v,t)
-        force_phi= 0#self._cached_force*(v[1]*R)
+        
+        new_hash = hashlib.md5(np.array([R,phi,z,v[0],v[1],v[2],t])).hexdigest()
+        if new_hash != self._force_hash:
+            self._calc_force(R,phi,z,v,t)
+        force_phi = self._cached_force*(-v[1]*R)
         return force_phi
         
         
