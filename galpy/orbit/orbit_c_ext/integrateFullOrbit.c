@@ -472,6 +472,13 @@ void parse_leapFuncArgs_Full(int npot,
       potentialArgs->nargs= (int) 13;
       potentialArgs->requiresVelocity= true;
       break;
+    case 40: //CC85 Galactic Wind Model
+      potentialArgs->RforceVelocity= &CC85WindRforce;
+      potentialArgs->zforceVelocity= &CC85Windzforce;
+      potentialArgs->phiforceVelocity= &CC85Windphiforce;
+      potentialArgs->nargs= (int) 17;
+      potentialArgs->requiresVelocity= true;
+      break;
 //////////////////////////////// WRAPPERS /////////////////////////////////////
     case -1: //DehnenSmoothWrapperPotential
       potentialArgs->potentialEval= &DehnenSmoothWrapperPotentialEval;

@@ -43,6 +43,7 @@ from . import CorotatingRotationWrapperPotential
 from . import GaussianAmplitudeWrapperPotential
 from . import ChandrasekharDynamicalFrictionForce
 from . import DragForce
+from . import Winds
 from . import SphericalShellPotential
 from . import RingPotential
 from . import PerfectEllipsoidPotential
@@ -174,8 +175,9 @@ DiskSCFPotential = DiskSCFPotential.DiskSCFPotential
 SpiralArmsPotential = SpiralArmsPotential.SpiralArmsPotential
 HenonHeilesPotential= HenonHeilesPotential.HenonHeilesPotential
 ChandrasekharDynamicalFrictionForce= ChandrasekharDynamicalFrictionForce.ChandrasekharDynamicalFrictionForce
-ConstantVerticalForce = DragForce.ConstantVerticalForce
-ConstantWind = DragForce.ConstantWind
+ConstantVerticalForce = Winds.ConstantVerticalForce
+ConstantWind = Winds.ConstantWind
+CC85Wind = Winds.CC85Wind
 SphericalShellPotential= SphericalShellPotential.SphericalShellPotential
 RingPotential= RingPotential.RingPotential
 PerfectEllipsoidPotential= PerfectEllipsoidPotential.PerfectEllipsoidPotential
