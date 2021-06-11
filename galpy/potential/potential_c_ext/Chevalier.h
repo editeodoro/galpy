@@ -7,8 +7,8 @@
 
 #define parsec_in_cm 3.085678e+18 //parsec in cm
 #define parsec_in_km 3.085678e+13 //parsec in km
-#define msun_in_g    1.988920e+33	//msun in g
-#define year_in_sec  3.155760e+07	//year in s
+#define msun_in_g    1.988920e+33 //msun in g
+#define year_in_sec  3.155760e+07 //year in s
 
 
 typedef struct Chevalier

@@ -159,7 +159,6 @@ double ConstantWindphiforce(double R, double z, double phi, double t,
 //////////////////////////////////////////////////////////////////////////////
 
 Chevalier CC85; 
-int count = 0;
 
 void defineCC85model(double *args) {
     
@@ -167,7 +166,11 @@ void defineCC85model(double *args) {
     double scale_radius = args[11]*1000;
     double Edot = args[12];
     double Mdot = args[13];
-    SetChevalier(&CC85,Mdot,Edot,gamma,scale_radius);
+    
+    int alreadyset = CC85.gamma==gamma && CC85.R==scale_radius && 
+                     CC85.E_dot==Edot && CC85.M_dot==Mdot;
+    
+    if (!alreadyset) SetChevalier(&CC85,Mdot,Edot,gamma,scale_radius);
 }
 
 
@@ -236,7 +239,7 @@ double CC85WindAmplitude(double R,double z,double phi,double t,
 double CC85WindRforce(double R, double z, double phi, double t, struct potentialArg *pArgs,
                       double vR, double vT, double vz){
         
-    if (count++==0) defineCC85model(pArgs->args);
+    defineCC85model(pArgs->args);
     double *vwp = WindVelocityComponents(R,z,pArgs->args);
     double forceAmplitude = pArgs->args[7];
     if (!isCached(pArgs->args,R,z,phi,t,vR,vT,vz)) 
@@ -248,7 +251,7 @@ double CC85WindRforce(double R, double z, double phi, double t, struct potential
 
 double CC85Windzforce(double R, double z, double phi, double t, struct potentialArg *pArgs,
                       double vR, double vT, double vz){
-    if (count++==0) defineCC85model(pArgs->args);
+    defineCC85model(pArgs->args);
     double *vwp = WindVelocityComponents(R,z,pArgs->args);
     double forceAmplitude = pArgs->args[7];
     if (!isCached(pArgs->args,R,z,phi,t,vR,vT,vz))
@@ -260,7 +263,7 @@ double CC85Windzforce(double R, double z, double phi, double t, struct potential
 
 double CC85Windphiforce(double R, double z, double phi, double t, struct potentialArg *pArgs,
                         double vR, double vT, double vz){
-    if (count++==0) defineCC85model(pArgs->args);
+    defineCC85model(pArgs->args);
     double *vwp = WindVelocityComponents(R,z,pArgs->args);
     double forceAmplitude = pArgs->args[7];
     if (!isCached(pArgs->args,R,z,phi,t,vR,vT,vz))
